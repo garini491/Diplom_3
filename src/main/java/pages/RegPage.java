@@ -1,17 +1,33 @@
-package Pages;
+package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class RegPage {
-    WebDriver driver;
-
     private static final String name = "firstName";
     private static final String email = "garini491@yandex.ru";
-
     private static final String password = "12345678";
+    private final WebDriver driver;
+    // Поле ввода email
+    private final By emailField = By.xpath(".//fieldset[2]/div/div/input");
+    // Поле ввода пароля
+    private final By passwordField = By.xpath(".//fieldset[3]/div/div/input");
+    // Поле ввода Имени
+    private final By nameField = By.xpath(".//fieldset[1]/div/div/input");
+    // Кнопка Регистрации
+    private final By registrationButton = By.xpath(".//button[text() = 'Зарегистрироваться']");
+    // Заголовок Регистрация
+    private final By regLogo = By.xpath(".//h2[text() = 'Регистрация']");
+    // Ошибка пароля
+    private final By passError = By.xpath(".//p[text() = 'Некорректный пароль']");
+    private final By loginButton = By.xpath(".//a[text() = 'Войти']");
+
+    public RegPage(WebDriver driver) {
+        this.driver = driver;
+    }
 
     public static String getName() {
         return name;
@@ -25,59 +41,44 @@ public class RegPage {
         return password;
     }
 
-    public RegPage(WebDriver driver) {
-        this.driver = driver;
-    }
-
-    // Поле ввода email
-    By emailField = By.xpath("//*[@id=\"root\"]/div/main/div/form/fieldset[2]/div/div/input");
-
-    // Поле ввода пароля
-    By passwordField = By.xpath("//*[@id=\"root\"]/div/main/div/form/fieldset[3]/div/div/input");
-
-    // Поле ввода Имени
-    By nameField = By.xpath("//*[@id=\"root\"]/div/main/div/form/fieldset[1]/div/div/input");
-
-    // Кнопка Регистрации
-    By registrationButton = By.xpath("//*[@id=\"root\"]/div/main/div/form/button");
-
-    // Заголовок Регистрация
-    By regLogo = By.xpath(".//h2[text() = 'Регистрация']");
-
-    // Ошибка пароля
-    By passError = By.xpath(".//p[text() = 'Некорректный пароль']");
-
-    By loginButton = By.xpath(".//a[text() = 'Войти']");
-
+    @Step("Ввести имя")
     public void setName() {
         driver.findElement(nameField).click();
         driver.findElement(nameField).sendKeys(name);
     }
+
+    @Step("Ввести Email")
     public void setEmail() {
         driver.findElement(emailField).click();
         driver.findElement(emailField).sendKeys(email);
     }
 
+    @Step("Ввести валидный пароль")
     public void setCorrectPassword() {
         driver.findElement(passwordField).click();
         driver.findElement(passwordField).sendKeys(password);
     }
 
+    @Step("Нажать кнопку Регистрация")
     public void regButtonClick() {
         driver.findElement(registrationButton);
         driver.findElement(registrationButton).click();
     }
+
+    @Step("Ввести невалидный пароль")
     public void setIncorrectPassword() {
         driver.findElement(passwordField).click();
         driver.findElement(passwordField).sendKeys("12345");
     }
 
+    @Step("Ввести валидные данные")
     public void setCorrectRegData() {
         setName();
         setEmail();
         setCorrectPassword();
     }
 
+    @Step("Ввести невалидные данные")
     public void setIncorrectRegData() {
         setName();
         setEmail();
@@ -89,6 +90,7 @@ public class RegPage {
                 .until(ExpectedConditions.visibilityOf(driver.findElement(regLogo)));
     }
 
+    @Step("Зарегистрироваться")
     public void registrationStep() {
         regLogoWait();
         setCorrectRegData();
@@ -99,6 +101,7 @@ public class RegPage {
         return driver.findElement(passError).isDisplayed();
     }
 
+    @Step("Нажать на кнопку Войти")
     public void loginButtonClick() {
         driver.findElement(loginButton);
         driver.findElement(loginButton).click();

@@ -1,6 +1,3 @@
-import Pages.LoginPage;
-import Pages.MainPage;
-import Pages.PersonalAreaPage;
 import api.User;
 import api.UserClient;
 import api.UserCredentials;
@@ -11,77 +8,73 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import pages.LoginPage;
+import pages.MainPage;
+import pages.PersonalAreaPage;
 
 import static org.junit.Assert.assertTrue;
 
 public class PersonalAreaTest {
-    WebDriver driver;
-    User user = new User();;
-    UserClient client = new UserClient();
+    private final User user = new User();
+    private final UserClient client = new UserClient();
+    private WebDriver driver;
+    private MainPage mainPage;
+    private LoginPage loginPage;
+    private PersonalAreaPage personalAreaPage;
 
     @Before
     public void setUp() {
         client.register(user);
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
+        driver = new ChromeDriver();
+        mainPage = new MainPage(driver);
+        loginPage = new LoginPage(driver);
+        personalAreaPage = new PersonalAreaPage(driver);
     }
 
     @Test
     @Description("Проверка перехода по клику на лого - Chrome")
     public void logoBurgerClickTestChrome() {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
-        driver = new ChromeDriver();
-        MainPage mainPage = new MainPage(driver);
-        PersonalAreaPage personalAreaPage = new PersonalAreaPage(driver);
-        LoginPage loginPage = new LoginPage(driver);
         mainPage.mainPageOpen();
         mainPage.loginButtonClick();
         loginPage.setLoginData();
         loginPage.loginClick();
         mainPage.personalAreaButtonClick();
         personalAreaPage.logoClick();
-        assertTrue(mainPage.createOrderButtonVisible());
+        assertTrue("Переход по клику на лого не работает: ", mainPage.createOrderButtonVisible());
     }
+
     @Test
     @Description("Проверка перехода по клику на конструктор - Chrome")
     public void constructorClickTestChrome() {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
-        driver = new ChromeDriver();
-        MainPage mainPage = new MainPage(driver);
-        PersonalAreaPage personalAreaPage = new PersonalAreaPage(driver);
-        LoginPage loginPage = new LoginPage(driver);
         mainPage.mainPageOpen();
         mainPage.loginButtonClick();
         loginPage.setLoginData();
         loginPage.loginClick();
         mainPage.personalAreaButtonClick();
         personalAreaPage.constructorClick();
-        assertTrue(mainPage.createOrderButtonVisible());
+        assertTrue("Переход по клику на лого не работает: ", mainPage.createOrderButtonVisible());
     }
+
     @Test
     @Description("Проверка перехода в личный кабинет без авторизации - Chrome")
     public void personalAreaTestWithoutAuthChrome() {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
-        driver = new ChromeDriver();
-        MainPage mainPage = new MainPage(driver);
-        PersonalAreaPage personalAreaPage = new PersonalAreaPage(driver);
         mainPage.mainPageOpen();
         mainPage.personalAreaButtonClick();
         assertTrue(personalAreaPage.loginH2IsVisible());
     }
+
     @Test
     @Description("Проверка перехода в личный кабинет с авторизацией - Chrome")
     public void personalAreaTestWithAuthChrome() {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
-        driver = new ChromeDriver();
-        MainPage mainPage = new MainPage(driver);
-        PersonalAreaPage personalAreaPage = new PersonalAreaPage(driver);
-        LoginPage loginPage = new LoginPage(driver);
         mainPage.mainPageOpen();
         mainPage.loginButtonClick();
         loginPage.setLoginData();
         loginPage.loginClick();
         mainPage.personalAreaButtonClick();
-        assertTrue(personalAreaPage.logoutButtonVisible());
+        assertTrue("Переход по клику на лого не работает: ", personalAreaPage.logoutButtonVisible());
     }
+
     @Test
     @Description("Проверка перехода по клику на лого - Yandex")
     public void logoBurgerClickTest() {
@@ -89,17 +82,18 @@ public class PersonalAreaTest {
         ChromeOptions options = new ChromeOptions();
         options.setBinary("/usr/bin/yandex-browser");
         driver = new ChromeDriver(options);
-        MainPage mainPage = new MainPage(driver);
-        PersonalAreaPage personalAreaPage = new PersonalAreaPage(driver);
-        LoginPage loginPage = new LoginPage(driver);
+        mainPage = new MainPage(driver);
+        loginPage = new LoginPage(driver);
+        personalAreaPage = new PersonalAreaPage(driver);
         mainPage.mainPageOpen();
         mainPage.loginButtonClick();
         loginPage.setLoginData();
         loginPage.loginClick();
         mainPage.personalAreaButtonClick();
         personalAreaPage.logoClick();
-        assertTrue(mainPage.createOrderButtonVisible());
+        assertTrue("Переход по клику на лого не работает: ", mainPage.createOrderButtonVisible());
     }
+
     @Test
     @Description("Проверка перехода по клику на конструктор - Yandex")
     public void constructorClickTest() {
@@ -107,17 +101,18 @@ public class PersonalAreaTest {
         ChromeOptions options = new ChromeOptions();
         options.setBinary("/usr/bin/yandex-browser");
         driver = new ChromeDriver(options);
-        MainPage mainPage = new MainPage(driver);
-        PersonalAreaPage personalAreaPage = new PersonalAreaPage(driver);
-        LoginPage loginPage = new LoginPage(driver);
+        mainPage = new MainPage(driver);
+        loginPage = new LoginPage(driver);
+        personalAreaPage = new PersonalAreaPage(driver);
         mainPage.mainPageOpen();
         mainPage.loginButtonClick();
         loginPage.setLoginData();
         loginPage.loginClick();
         mainPage.personalAreaButtonClick();
         personalAreaPage.constructorClick();
-        assertTrue(mainPage.createOrderButtonVisible());
+        assertTrue("Переход по клику на лого не работает: ", mainPage.createOrderButtonVisible());
     }
+
     @Test
     @Description("Проверка перехода в личный кабинет без авторизации - Yandex")
     public void personalAreaTestWithoutAuth() {
@@ -125,12 +120,13 @@ public class PersonalAreaTest {
         ChromeOptions options = new ChromeOptions();
         options.setBinary("/usr/bin/yandex-browser");
         driver = new ChromeDriver(options);
-        MainPage mainPage = new MainPage(driver);
-        PersonalAreaPage personalAreaPage = new PersonalAreaPage(driver);
+        mainPage = new MainPage(driver);
+        loginPage = new LoginPage(driver);
         mainPage.mainPageOpen();
         mainPage.personalAreaButtonClick();
-        assertTrue(personalAreaPage.loginH2IsVisible());
+        assertTrue("Переход по клику на лого не работает: ", personalAreaPage.loginH2IsVisible());
     }
+
     @Test
     @Description("Проверка перехода в личный кабинет с авторизацией - Yandex")
     public void personalAreaTestWithAuth() {
@@ -138,17 +134,16 @@ public class PersonalAreaTest {
         ChromeOptions options = new ChromeOptions();
         options.setBinary("/usr/bin/yandex-browser");
         driver = new ChromeDriver(options);
-        MainPage mainPage = new MainPage(driver);
-        PersonalAreaPage personalAreaPage = new PersonalAreaPage(driver);
-        LoginPage loginPage = new LoginPage(driver);
+        mainPage = new MainPage(driver);
+        loginPage = new LoginPage(driver);
+        personalAreaPage = new PersonalAreaPage(driver);
         mainPage.mainPageOpen();
         mainPage.loginButtonClick();
         loginPage.setLoginData();
         loginPage.loginClick();
         mainPage.personalAreaButtonClick();
-        assertTrue(personalAreaPage.logoutButtonVisible());
+        assertTrue("Переход по клику на лого не работает: ", personalAreaPage.logoutButtonVisible());
     }
-
 
     @After
     public void tearDown() {

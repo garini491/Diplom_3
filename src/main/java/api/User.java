@@ -1,11 +1,11 @@
 package api;
 
-import Pages.RegPage;
+import pages.RegPage;
 
 public class User {
-    private String email = RegPage.getEmail();
-    private String password = RegPage.getPassword();
-    private String name = RegPage.getName();
+    private final String email = RegPage.getEmail();
+    private final String password = RegPage.getPassword();
+    private final String name = RegPage.getName();
 
     public String getEmail() {
         return email;

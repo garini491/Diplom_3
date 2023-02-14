@@ -1,4 +1,3 @@
-import Pages.*;
 import api.User;
 import api.UserClient;
 import api.UserCredentials;
@@ -9,57 +8,57 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import pages.*;
 
 import static org.junit.Assert.assertTrue;
 
 public class LoginTest {
+    private final User user = new User();
+    private final UserClient client = new UserClient();
     private WebDriver driver;
-    User user = new User();;
-    UserClient client = new UserClient();
+    private MainPage mainPage;
+    private LoginPage loginPage;
+    private RestorePage restorePage;
+    private PersonalAreaPage personalAreaPage;
+    private RegPage regPage;
+
     @Before
     public void setUp() {
         client.register(user);
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
+        driver = new ChromeDriver();
+        mainPage = new MainPage(driver);
+        loginPage = new LoginPage(driver);
+        restorePage = new RestorePage(driver);
+        personalAreaPage = new PersonalAreaPage(driver);
+        regPage = new RegPage(driver);
     }
 
     @Test
     @Description("Авторизация по кнопке 'Войти в аккаунт' в GoogleChrome")
     public void loginOnMainButtonChrome() {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
-        driver = new ChromeDriver();
-        MainPage mainPage = new MainPage(driver);
-        LoginPage loginPage = new LoginPage(driver);
-        PersonalAreaPage personalAreaPage = new PersonalAreaPage(driver);
         mainPage.mainPageOpen();
         mainPage.loginButtonClick();
         loginPage.setLoginData();
         loginPage.loginClick();
         mainPage.personalAreaButtonClick();
-        assertTrue(personalAreaPage.logoutButtonVisible());
+        assertTrue("Авторизация не прошла: ", personalAreaPage.logoutButtonVisible());
     }
+
     @Test
     @Description("Авторизация через личный кабинет в GoogleChrome")
     public void loginOnPersonalAreaButtonChrome() {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
-        driver = new ChromeDriver();
-        MainPage mainPage = new MainPage(driver);
-        LoginPage loginPage = new LoginPage(driver);
-        PersonalAreaPage personalAreaPage = new PersonalAreaPage(driver);
         mainPage.mainPageOpen();
         mainPage.personalAreaButtonClick();
         loginPage.setLoginData();
         loginPage.loginClick();
         mainPage.personalAreaButtonClick();
-        assertTrue(personalAreaPage.logoutButtonVisible());
+        assertTrue("Авторизация не прошла: ", personalAreaPage.logoutButtonVisible());
     }
+
     @Test
     @Description("Авторизация через регистрацию в GoogleChrome")
     public void loginOnRegButtonChrome() {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
-        driver = new ChromeDriver();
-        MainPage mainPage = new MainPage(driver);
-        LoginPage loginPage = new LoginPage(driver);
-        RegPage regPage = new RegPage(driver);
-        PersonalAreaPage personalAreaPage = new PersonalAreaPage(driver);
         mainPage.mainPageOpen();
         mainPage.loginButtonClick();
         loginPage.regClick();
@@ -67,17 +66,12 @@ public class LoginTest {
         loginPage.setLoginData();
         loginPage.loginClick();
         mainPage.personalAreaButtonClick();
-        assertTrue(personalAreaPage.logoutButtonVisible());
+        assertTrue("Авторизация не прошла: ", personalAreaPage.logoutButtonVisible());
     }
+
     @Test
     @Description("Авторизация через востановление пароля в GoogleChrome")
     public void loginOnRestorePasswordButtonChrome() {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
-        driver = new ChromeDriver();
-        MainPage mainPage = new MainPage(driver);
-        LoginPage loginPage = new LoginPage(driver);
-        RestorePage restorePage = new RestorePage(driver);
-        PersonalAreaPage personalAreaPage = new PersonalAreaPage(driver);
         mainPage.mainPageOpen();
         mainPage.loginButtonClick();
         loginPage.scrollToRestoreButton();
@@ -86,8 +80,9 @@ public class LoginTest {
         loginPage.setLoginData();
         loginPage.loginClick();
         mainPage.personalAreaButtonClick();
-        assertTrue(personalAreaPage.logoutButtonVisible());
+        assertTrue("Авторизация не прошла: ", personalAreaPage.logoutButtonVisible());
     }
+
     @Test
     @Description("Авторизация по кнопке 'Войти в аккаунт' в YandexBrowser")
     public void loginOnMainButton() {
@@ -95,16 +90,17 @@ public class LoginTest {
         ChromeOptions options = new ChromeOptions();
         options.setBinary("/usr/bin/yandex-browser");
         driver = new ChromeDriver(options);
-        MainPage mainPage = new MainPage(driver);
-        LoginPage loginPage = new LoginPage(driver);
-        PersonalAreaPage personalAreaPage = new PersonalAreaPage(driver);
+        mainPage = new MainPage(driver);
+        loginPage = new LoginPage(driver);
+        personalAreaPage = new PersonalAreaPage(driver);
         mainPage.mainPageOpen();
         mainPage.loginButtonClick();
         loginPage.setLoginData();
         loginPage.loginClick();
         mainPage.personalAreaButtonClick();
-        assertTrue(personalAreaPage.logoutButtonVisible());
+        assertTrue("Авторизация не прошла: ", personalAreaPage.logoutButtonVisible());
     }
+
     @Test
     @Description("Авторизация через личный кабинет в YandexBrowser")
     public void loginOnPersonalAreaButton() {
@@ -112,16 +108,17 @@ public class LoginTest {
         ChromeOptions options = new ChromeOptions();
         options.setBinary("/usr/bin/yandex-browser");
         driver = new ChromeDriver(options);
-        MainPage mainPage = new MainPage(driver);
-        LoginPage loginPage = new LoginPage(driver);
-        PersonalAreaPage personalAreaPage = new PersonalAreaPage(driver);
+        mainPage = new MainPage(driver);
+        loginPage = new LoginPage(driver);
+        personalAreaPage = new PersonalAreaPage(driver);
         mainPage.mainPageOpen();
         mainPage.personalAreaButtonClick();
         loginPage.setLoginData();
         loginPage.loginClick();
         mainPage.personalAreaButtonClick();
-        assertTrue(personalAreaPage.logoutButtonVisible());
+        assertTrue("Авторизация не прошла: ", personalAreaPage.logoutButtonVisible());
     }
+
     @Test
     @Description("Авторизация через регистрацию в YandexBrowser")
     public void loginOnRegButton() {
@@ -129,10 +126,10 @@ public class LoginTest {
         ChromeOptions options = new ChromeOptions();
         options.setBinary("/usr/bin/yandex-browser");
         driver = new ChromeDriver(options);
-        MainPage mainPage = new MainPage(driver);
-        LoginPage loginPage = new LoginPage(driver);
-        RegPage regPage = new RegPage(driver);
-        PersonalAreaPage personalAreaPage = new PersonalAreaPage(driver);
+        mainPage = new MainPage(driver);
+        loginPage = new LoginPage(driver);
+        regPage = new RegPage(driver);
+        personalAreaPage = new PersonalAreaPage(driver);
         mainPage.mainPageOpen();
         mainPage.loginButtonClick();
         loginPage.regClick();
@@ -140,8 +137,9 @@ public class LoginTest {
         loginPage.setLoginData();
         loginPage.loginClick();
         mainPage.personalAreaButtonClick();
-        assertTrue(personalAreaPage.logoutButtonVisible());
+        assertTrue("Авторизация не прошла: ", personalAreaPage.logoutButtonVisible());
     }
+
     @Test
     @Description("Авторизация через востановление пароля в YandexBrowser")
     public void loginOnRestorePasswordButton() {
@@ -149,10 +147,9 @@ public class LoginTest {
         ChromeOptions options = new ChromeOptions();
         options.setBinary("/usr/bin/yandex-browser");
         driver = new ChromeDriver(options);
-        MainPage mainPage = new MainPage(driver);
-        LoginPage loginPage = new LoginPage(driver);
-        RestorePage restorePage = new RestorePage(driver);
-        PersonalAreaPage personalAreaPage = new PersonalAreaPage(driver);
+        mainPage = new MainPage(driver);
+        loginPage = new LoginPage(driver);
+        personalAreaPage = new PersonalAreaPage(driver);
         mainPage.mainPageOpen();
         mainPage.loginButtonClick();
         loginPage.scrollToRestoreButton();
@@ -161,8 +158,9 @@ public class LoginTest {
         loginPage.setLoginData();
         loginPage.loginClick();
         mainPage.personalAreaButtonClick();
-        assertTrue(personalAreaPage.logoutButtonVisible());
+        assertTrue("Авторизация не прошла: ", personalAreaPage.logoutButtonVisible());
     }
+
     @After
     public void tearDown() {
         driver.quit();
